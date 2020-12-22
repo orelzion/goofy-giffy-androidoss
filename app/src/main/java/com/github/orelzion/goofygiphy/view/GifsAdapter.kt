@@ -7,6 +7,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import com.bumptech.glide.request.transition.DrawableCrossFadeTransition
 import com.github.orelzion.goofygiphy.R
 import com.github.orelzion.goofygiphy.model.network.Data
 
@@ -44,6 +46,9 @@ class GifViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         Glide.with(itemView.context)
             .load(gifUrl)
+            .placeholder(R.drawable.loading)
+            .thumbnail(Glide.with(itemView.context).load(R.drawable.loading))
+            .transition(DrawableTransitionOptions.withCrossFade())
             .into(imageView)
     }
 }

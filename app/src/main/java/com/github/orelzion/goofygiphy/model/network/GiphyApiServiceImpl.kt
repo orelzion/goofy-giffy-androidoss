@@ -7,7 +7,7 @@ import retrofit2.Retrofit
 
 object GiphyApiServiceImpl {
 
-    val service by lazy { getRetroFit().create(GiphyApiService::class.java) }
+    val service: GiphyApiService by lazy { getRetroFit().create(GiphyApiService::class.java) }
 
     private fun getRetroFit(): Retrofit {
         return Retrofit.Builder()
