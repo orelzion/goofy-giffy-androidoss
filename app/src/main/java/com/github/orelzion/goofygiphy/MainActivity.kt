@@ -1,11 +1,13 @@
 package com.github.orelzion.goofygiphy
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
+import com.github.orelzion.goofygiphy.model.network.Data
 import com.github.orelzion.goofygiphy.model.network.GiphyApiServiceImpl
 import com.github.orelzion.goofygiphy.model.network.GiphyResponse
 import com.github.orelzion.goofygiphy.view.GifsAdapter
@@ -26,10 +28,19 @@ class MainActivity : AppCompatActivity() {
         progressBar = findViewById(R.id.progressBar)
         gifsListView = findViewById(R.id.gifsList)
 
-        gifAdapter = GifsAdapter()
+        gifAdapter = GifsAdapter().apply {
+            clickListener = this@MainActivity::onItemClicked
+        }
         gifsListView.adapter = gifAdapter
 
         loadGifs()
+    }
+
+    private fun onItemClicked(data: Data) {
+        val fullScreenIntent = Intent(this, FullScreenImageActivity::class.java).apply {
+            putExtra("url", data)
+        }
+        startActivity(fullScreenIntent)
     }
 
     private fun setProgressVisibility(show: Boolean) {

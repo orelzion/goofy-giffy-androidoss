@@ -8,13 +8,13 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
-import com.bumptech.glide.request.transition.DrawableCrossFadeTransition
 import com.github.orelzion.goofygiphy.R
 import com.github.orelzion.goofygiphy.model.network.Data
 
-class GifsAdapter: RecyclerView.Adapter<GifViewHolder>() {
+class GifsAdapter : RecyclerView.Adapter<GifViewHolder>() {
 
     private var gifImages: List<Data> = emptyList()
+    var clickListener: ((Data) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GifViewHolder {
         return GifViewHolder(
@@ -27,6 +27,10 @@ class GifsAdapter: RecyclerView.Adapter<GifViewHolder>() {
         val gifItem = gifImages[position]
 
         holder.bind(title = gifItem.title, gifUrl = gifItem.images.downsized_medium.url)
+
+        holder.itemView.setOnClickListener {
+            clickListener?.invoke(gifItem)
+        }
     }
 
     override fun getItemCount() = gifImages.size
