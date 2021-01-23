@@ -9,12 +9,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.github.orelzion.goofygiphy.R
-import com.github.orelzion.goofygiphy.model.network.Data
+import com.github.orelzion.goofygiphy.model.network.GifData
 
 class GifsAdapter : RecyclerView.Adapter<GifViewHolder>() {
 
-    private var gifImages: List<Data> = emptyList()
-    var clickListener: ((Data) -> Unit)? = null
+    private var gifImages: List<GifData> = emptyList()
+    var clickListener: ((GifData) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GifViewHolder {
         return GifViewHolder(
@@ -35,7 +35,7 @@ class GifsAdapter : RecyclerView.Adapter<GifViewHolder>() {
 
     override fun getItemCount() = gifImages.size
 
-    fun submitList(gifImages: List<Data>) {
+    fun submitList(gifImages: List<GifData>) {
         this.gifImages = gifImages
         notifyDataSetChanged()
     }

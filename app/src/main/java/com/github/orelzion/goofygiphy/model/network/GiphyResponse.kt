@@ -1,16 +1,15 @@
 package com.github.orelzion.goofygiphy.model.network
 
-import android.os.Parcel
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class GiphyResponse(val data: List<Data>)
+data class GiphyResponse(val data: List<GifData>)
 
 @Parcelize
 @Serializable
-data class Data(
+data class GifData(
     val id: String,
     val images: Image,
     val title: String

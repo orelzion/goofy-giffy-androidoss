@@ -7,7 +7,7 @@ import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
-import com.github.orelzion.goofygiphy.model.network.Data
+import com.github.orelzion.goofygiphy.model.network.GifData
 
 class FullScreenImageActivity : AppCompatActivity() {
 
@@ -19,7 +19,7 @@ class FullScreenImageActivity : AppCompatActivity() {
 
         setContentView(R.layout.activity_full_screen_image)
 
-        intent.getParcelableExtra<Data>("url")?.let {
+        intent.getParcelableExtra<GifData>("url")?.let {
             setupViews(it.images.downsized_medium.url)
         }
     }

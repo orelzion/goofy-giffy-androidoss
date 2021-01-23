@@ -7,7 +7,7 @@ import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
-import com.github.orelzion.goofygiphy.model.network.Data
+import com.github.orelzion.goofygiphy.model.network.GifData
 import com.github.orelzion.goofygiphy.model.network.GiphyApiServiceImpl
 import com.github.orelzion.goofygiphy.model.network.GiphyResponse
 import com.github.orelzion.goofygiphy.view.GifsAdapter
@@ -17,9 +17,12 @@ import retrofit2.Response
 
 class MainActivity : AppCompatActivity() {
 
+    private val IMAGE_DATA_KEY = "image_data"
+
     private lateinit var gifAdapter: GifsAdapter
     private lateinit var gifsListView: RecyclerView
     private lateinit var progressBar: ProgressBar
+    private var imageDataList = emptyList<GifData>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,12 +36,31 @@ class MainActivity : AppCompatActivity() {
         }
         gifsListView.adapter = gifAdapter
 
-        loadGifs()
+        if (savedInstanceState == null) {
+            loadGifs()
+        }
     }
 
-    private fun onItemClicked(data: Data) {
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+
+        savedInstanceState.getParcelableArrayList<GifData>(IMAGE_DATA_KEY)?.takeIf { it.isNotEmpty() }?.let {
+            imageDataList = it
+            gifAdapter.submitList(it)
+            setProgressVisibility(false)
+        } ?: run {
+            loadGifs()
+        }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.putParcelableArrayList(IMAGE_DATA_KEY, ArrayList(imageDataList))
+        super.onSaveInstanceState(outState)
+    }
+
+    private fun onItemClicked(gifData: GifData) {
         val fullScreenIntent = Intent(this, FullScreenImageActivity::class.java).apply {
-            putExtra("url", data)
+            putExtra("url", gifData)
         }
         startActivity(fullScreenIntent)
     }
@@ -61,6 +83,7 @@ class MainActivity : AppCompatActivity() {
         override fun onResponse(call: Call<GiphyResponse>, response: Response<GiphyResponse>) {
             if (response.isSuccessful) {
                 response.body()?.data?.let {
+                    imageDataList = it
                     gifAdapter.submitList(it)
                 }
             }
