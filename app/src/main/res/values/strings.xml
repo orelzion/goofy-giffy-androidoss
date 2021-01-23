@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">GoofyGiphy</string>
+    <string name="share_title">Share this Image</string>
 </resources>
